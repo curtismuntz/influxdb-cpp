@@ -133,7 +133,8 @@ namespace influxdb_cpp {
             if((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) return -2;
 
             lines_ << '\n';
-            if(sendto(sock, &lines_.str()[0], lines_.str().length(), 0, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr)), static_cast<int>(lines_.str().length()))
+            ret = sendto(sock, &lines_.str()[0], lines_.str().length(), 0, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr)), static_cast<int>(lines_.str().length());
+            if(ret < 0)
                 ret = -3;
 
             closesocket(sock);
